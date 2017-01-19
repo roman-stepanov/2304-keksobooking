@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Роман Степанов](https://up.htmlacademy.ru/javascript/8/user/2304).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Казаков](https://up.htmlacademy.ru/javascript/8/user/343981).
 
 ---
 
