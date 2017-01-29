@@ -21,12 +21,12 @@ var deactivatePins = function () {
 };
 
 var hideDialog = function () {
-  dialogWindow.style.display = 'none';
+  dialogWindow.classList.add('invisible');
   deactivatePins();
 };
 
 var showDialog = function () {
-  dialogWindow.style.display = 'block';
+  dialogWindow.classList.remove('invisible');
 };
 
 var selectPin = function (pin) {
