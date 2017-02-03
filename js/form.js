@@ -7,6 +7,7 @@ var pinMap = document.querySelector('.tokyo__pin-map');
 var pins = document.querySelectorAll('.pin');
 
 var dialogWindow = document.querySelector('.dialog');
+var dialogClose = dialogWindow.querySelector('.dialog__close');
 
 var noticeTitle = document.querySelector('#title');
 var noticePrice = document.querySelector('#price');
@@ -54,6 +55,7 @@ var selectPinHandler = function (evt) {
   while (target !== pinMap) {
     if (target.classList.contains('pin')) {
       selectPin(target);
+      break;
     }
     target = target.parentNode;
   }
@@ -80,6 +82,7 @@ var closeDialogHandler = function (evt) {
     if (target.classList.contains('dialog__close')) {
       evt.preventDefault();
       closeDialog();
+      break;
     }
     target = target.parentNode;
   }
@@ -125,6 +128,27 @@ var changeRoom = function () {
   }
 };
 
+var getPinOffsetX = function (pin) {
+  return parseInt(getComputedStyle(pin).left, 10);
+};
+
+var comparePinX = function (a, b) {
+  return getPinOffsetX(a) - getPinOffsetX(b);
+};
+
+var remapTabIndex = function () {
+  var tabindex = 1;
+  var sortPins = [].slice.call(pins);
+
+  dialogClose.setAttribute('tabindex', tabindex);
+
+  sortPins.sort(comparePinX);
+  for (var i = 0; i < pins.length; i++) {
+    sortPins[i].setAttribute('tabindex', ++tabindex);
+  }
+};
+
+remapTabIndex();
 pinMap.addEventListener('click', selectPinHandler);
 pinMap.addEventListener('keydown', keydownMapHandler);
 validationForm();
