@@ -1,98 +1,14 @@
 'use strict';
 
-var ENTER_KEY_CODE = 13;
-var ESC_KEY_CODE = 27;
-
-var pinMap = document.querySelector('.tokyo__pin-map');
-var pins = document.querySelectorAll('.pin');
-
-var dialogWindow = document.querySelector('.dialog');
-var dialogClose = dialogWindow.querySelector('.dialog__close');
-
-var noticeTitle = document.querySelector('#title');
-var noticePrice = document.querySelector('#price');
-var noticeAddress = document.querySelector('#address');
-var noticeTime = document.querySelector('#time');
-var noticeTimeout = document.querySelector('#timeout');
-var noticeType = document.querySelector('#type');
-var noticeRooms = document.querySelector('#room_number');
-var noticeCapacity = document.querySelector('#capacity');
-
-var deactivatePins = function () {
-  for (var i = 0; i < pins.length; i++) {
-    pins[i].classList.remove('pin--active');
-    pins[i].setAttribute('aria-pressed', 'false');
-  }
-};
-
-var closeDialog = function () {
-  dialogWindow.classList.add('invisible');
-  deactivatePins();
-
-  dialogWindow.removeEventListener('click', closeDialogHandler);
-  dialogWindow.removeEventListener('keydown', keydownDialogHandler);
-  pinMap.removeEventListener('keydown', keydownDialogHandler);
-};
-
-var showDialog = function () {
-  dialogWindow.classList.remove('invisible');
-
-  dialogWindow.addEventListener('click', closeDialogHandler);
-  dialogWindow.addEventListener('keydown', keydownDialogHandler);
-  pinMap.addEventListener('keydown', keydownDialogHandler);
-};
-
-var selectPin = function (pin) {
-  deactivatePins();
-  pin.classList.add('pin--active');
-  pin.setAttribute('aria-pressed', 'true');
-  showDialog();
-};
-
-var selectPinHandler = function (evt) {
-  var target = evt.target;
-
-  while (target !== pinMap) {
-    if (target.classList.contains('pin')) {
-      selectPin(target);
-      break;
-    }
-    target = target.parentNode;
-  }
-};
-
-var isPressENTER = function (evt) {
-  return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-};
-
-var isPressESC = function (evt) {
-  return evt.keyCode && evt.keyCode === ESC_KEY_CODE;
-};
-
-var keydownMapHandler = function (evt) {
-  if (isPressENTER(evt)) {
-    selectPinHandler(evt);
-  }
-};
-
-var closeDialogHandler = function (evt) {
-  var target = evt.target;
-
-  while (target !== dialogWindow) {
-    if (target.classList.contains('dialog__close')) {
-      evt.preventDefault();
-      closeDialog();
-      break;
-    }
-    target = target.parentNode;
-  }
-};
-
-var keydownDialogHandler = function (evt) {
-  if (isPressESC(evt)) {
-    closeDialog();
-  }
-};
+var noticeForm = document.querySelector('.notice__form');
+var noticeTitle = noticeForm.querySelector('#title');
+var noticePrice = noticeForm.querySelector('#price');
+var noticeAddress = noticeForm.querySelector('#address');
+var noticeTime = noticeForm.querySelector('#time');
+var noticeTimeout = noticeForm.querySelector('#timeout');
+var noticeType = noticeForm.querySelector('#type');
+var noticeRooms = noticeForm.querySelector('#room_number');
+var noticeCapacity = noticeForm.querySelector('#capacity');
 
 var validationForm = function () {
   noticeTitle.required = true;
@@ -108,49 +24,53 @@ var validationForm = function () {
 };
 
 var changeTime = function () {
-  noticeTimeout.value = noticeTime.value;
+  window.synchronizeFields(
+      noticeTime,
+      noticeTimeout,
+      ['12', '13', '14'],
+      ['12', '13', '14'],
+      'value'
+    );
 };
 
 var changeTimeout = function () {
-  noticeTime.value = noticeTimeout.value;
+  window.synchronizeFields(
+      noticeTimeout,
+      noticeTime,
+      ['12', '13', '14'],
+      ['12', '13', '14'],
+      'value'
+    );
 };
 
 var changeType = function () {
-  noticePrice.min = noticeType.value;
-  noticePrice.value = noticeType.value;
+  window.synchronizeFields(
+      noticeType,
+      noticePrice,
+      ['apartment', 'shack', 'palace'],
+      ['1000', '0', '10000'],
+      'min'
+    );
+  window.synchronizeFields(
+      noticeType,
+      noticePrice,
+      ['apartment', 'shack', 'palace'],
+      ['1000', '0', '10000'],
+      'value'
+    );
 };
 
 var changeRoom = function () {
-  if (noticeRooms.value === '1') {
-    noticeCapacity.value = '0';
-  } else {
-    noticeCapacity.value = '3';
-  }
+  window.synchronizeFields(
+      noticeRooms,
+      noticeCapacity,
+      ['1', '2', '100'],
+      ['0', '3', '3'],
+      'value'
+    );
 };
 
-var getPinOffsetX = function (pin) {
-  return parseInt(getComputedStyle(pin).left, 10);
-};
-
-var comparePinX = function (a, b) {
-  return getPinOffsetX(a) - getPinOffsetX(b);
-};
-
-var remapTabIndex = function () {
-  var tabindex = 1;
-  var sortPins = [].slice.call(pins);
-
-  dialogClose.setAttribute('tabindex', tabindex);
-
-  sortPins.sort(comparePinX);
-  for (var i = 0; i < pins.length; i++) {
-    sortPins[i].setAttribute('tabindex', ++tabindex);
-  }
-};
-
-remapTabIndex();
-pinMap.addEventListener('click', selectPinHandler);
-pinMap.addEventListener('keydown', keydownMapHandler);
+window.initializePins();
 validationForm();
 noticeTime.addEventListener('change', changeTime);
 noticeTimeout.addEventListener('change', changeTimeout);
