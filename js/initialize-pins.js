@@ -1,8 +1,6 @@
 'use strict';
 
-window.initializePins = function () {
-  var ENTER_KEY_CODE = 13;
-  var ESC_KEY_CODE = 27;
+(function () {
 
   var tokyo = document.querySelector('.tokyo');
   var pinMap = tokyo.querySelector('.tokyo__pin-map');
@@ -41,18 +39,10 @@ window.initializePins = function () {
     showDialog();
   };
 
-  var isPressENTER = function (evt) {
-    return evt.keyCode && evt.keyCode === ENTER_KEY_CODE;
-  };
-
-  var isPressESC = function (evt) {
-    return evt.keyCode && evt.keyCode === ESC_KEY_CODE;
-  };
-
   var selectPinHandler = function (evt) {
     var target = evt.target;
 
-    if (evt.type === 'click' || isPressENTER(evt)) {
+    if (evt.type === 'click' || window.evtPressKey.isPressENTER(evt)) {
       while (target !== pinMap) {
         if (target.classList.contains('pin')) {
           selectPin(target);
@@ -66,7 +56,7 @@ window.initializePins = function () {
   var closeDialogHandler = function (evt) {
     var target = evt.target;
 
-    if (evt.type === 'click' || isPressENTER(evt)) {
+    if (evt.type === 'click' || window.evtPressKey.isPressENTER(evt)) {
       while (target !== dialogWindow) {
         if (target.classList.contains('dialog__close')) {
           evt.preventDefault();
@@ -79,7 +69,7 @@ window.initializePins = function () {
   };
 
   var tokyoPressESC = function (evt) {
-    if (!dialogWindow.classList.contains('invisible') && isPressESC(evt)) {
+    if (!dialogWindow.classList.contains('invisible') && window.evtPressKey.isPressESC(evt)) {
       closeDialog();
     }
   };
@@ -107,4 +97,4 @@ window.initializePins = function () {
   remapTabIndex();
   pinMap.addEventListener('click', selectPinHandler);
   pinMap.addEventListener('keydown', selectPinHandler);
-};
+})();
