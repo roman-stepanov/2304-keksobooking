@@ -24,13 +24,18 @@
     noticeAddress.required = true;
   };
 
+  var callbackSynchronize = function (sourceInput, targetInput, sourceValues, targetValues, targetProperty) {
+    targetInput[targetProperty] = targetValues[sourceValues.indexOf(sourceInput.value)];
+  };
+
   var changeTime = function () {
     window.synchronizeFields(
         noticeTime,
         noticeTimeout,
         ['12', '13', '14'],
         ['12', '13', '14'],
-        'value'
+        'value',
+        callbackSynchronize
       );
   };
 
@@ -40,7 +45,8 @@
         noticeTime,
         ['12', '13', '14'],
         ['12', '13', '14'],
-        'value'
+        'value',
+        callbackSynchronize
       );
   };
 
@@ -50,14 +56,16 @@
         noticePrice,
         ['apartment', 'shack', 'palace'],
         ['1000', '0', '10000'],
-        'min'
+        'min',
+        callbackSynchronize
       );
     window.synchronizeFields(
         noticeType,
         noticePrice,
         ['apartment', 'shack', 'palace'],
         ['1000', '0', '10000'],
-        'value'
+        'value',
+        callbackSynchronize
       );
   };
 
@@ -67,7 +75,8 @@
         noticeCapacity,
         ['1', '2', '100'],
         ['0', '3', '3'],
-        'value'
+        'value',
+        callbackSynchronize
       );
   };
 
