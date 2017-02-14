@@ -2,41 +2,44 @@
 
 (function () {
 
-  var tokyo = document.querySelector('.tokyo');
-  var pinMap = tokyo.querySelector('.tokyo__pin-map');
+  // var tokyo = document.querySelector('.tokyo');
+  var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = pinMap.querySelectorAll('.pin');
-  var dialogWindow = tokyo.querySelector('.dialog');
-  var dialogClose = dialogWindow.querySelector('.dialog__close');
+  // var dialogWindow = tokyo.querySelector('.dialog');
+  var dialogClose = document.querySelector('.dialog__close');
+  var activePin = null;
 
-  var deactivatePins = function () {
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].classList.remove('pin--active');
-      pins[i].setAttribute('aria-pressed', 'false');
+  var activatePin = function () {
+    activePin.classList.add('pin--active');
+    activePin.setAttribute('aria-pressed', 'true');
+  };
+
+  var deactivatePin = function () {
+    activePin.classList.remove('pin--active');
+    activePin.setAttribute('aria-pressed', 'false');
+  };
+
+  var focusPin = function (evt) {
+    if (evt.type === 'keydown') {
+      activePin.focus();
     }
   };
 
-  var closeDialog = function () {
-    dialogWindow.classList.add('invisible');
-    deactivatePins();
-
-    dialogWindow.removeEventListener('click', closeDialogHandler);
-    dialogWindow.removeEventListener('keydown', closeDialogHandler);
-    tokyo.removeEventListener('keydown', tokyoPressESC);
+  var callbackShowDialog = function (selectedPin) {
+    return function () {
+      if (activePin) {
+        deactivatePin();
+      }
+      activePin = selectedPin;
+      activatePin();
+    };
   };
 
-  var showDialog = function () {
-    dialogWindow.classList.remove('invisible');
-
-    dialogWindow.addEventListener('click', closeDialogHandler);
-    dialogWindow.addEventListener('keydown', closeDialogHandler);
-    tokyo.addEventListener('keydown', tokyoPressESC);
-  };
-
-  var selectPin = function (pin) {
-    deactivatePins();
-    pin.classList.add('pin--active');
-    pin.setAttribute('aria-pressed', 'true');
-    showDialog();
+  var callbackCloseDialog = function (evt) {
+    return function () {
+      deactivatePin();
+      focusPin(evt);
+    };
   };
 
   var selectPinHandler = function (evt) {
@@ -45,32 +48,11 @@
     if (evt.type === 'click' || window.evtPressKey.isPressENTER(evt)) {
       while (target !== pinMap) {
         if (target.classList.contains('pin')) {
-          selectPin(target);
+          window.showCard(callbackShowDialog(target), callbackCloseDialog(evt));
           break;
         }
         target = target.parentNode;
       }
-    }
-  };
-
-  var closeDialogHandler = function (evt) {
-    var target = evt.target;
-
-    if (evt.type === 'click' || window.evtPressKey.isPressENTER(evt)) {
-      while (target !== dialogWindow) {
-        if (target.classList.contains('dialog__close')) {
-          evt.preventDefault();
-          closeDialog();
-          break;
-        }
-        target = target.parentNode;
-      }
-    }
-  };
-
-  var tokyoPressESC = function (evt) {
-    if (!dialogWindow.classList.contains('invisible') && window.evtPressKey.isPressESC(evt)) {
-      closeDialog();
     }
   };
 
