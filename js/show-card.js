@@ -20,7 +20,7 @@ window.showCard = (function () {
     dialogWindow.classList.add('invisible');
     dialogWindow.removeEventListener('click', closeDialogHandler);
     dialogWindow.removeEventListener('keydown', closeDialogHandler);
-    tokyo.removeEventListener('keydown', tokyoPressESC);
+    document.removeEventListener('keydown', pressESCHandler);
     if (typeof onCloseDialog === 'function') {
       onCloseDialog();
     }
@@ -30,7 +30,7 @@ window.showCard = (function () {
     dialogWindow.classList.remove('invisible');
     dialogWindow.addEventListener('click', closeDialogHandler);
     dialogWindow.addEventListener('keydown', closeDialogHandler);
-    tokyo.addEventListener('keydown', tokyoPressESC);
+    document.addEventListener('keydown', pressESCHandler);
     if (typeof onShowDialog === 'function') {
       onShowDialog();
     }
@@ -75,7 +75,7 @@ window.showCard = (function () {
     }
   };
 
-  var tokyoPressESC = function (evt) {
+  var pressESCHandler = function (evt) {
     if (!dialogWindow.classList.contains('invisible') && window.evtPressKey.isPressESC(evt)) {
       closeDialog();
     }
