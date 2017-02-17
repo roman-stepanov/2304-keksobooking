@@ -80,7 +80,7 @@
 
     if (evt.type === 'click' || window.evtPressKey.isPressENTER(evt)) {
       while (target !== pinMap) {
-        if (target.classList.contains('pin')) {
+        if (target.classList.contains('pin') && !target.classList.contains('pin__main')) {
           window.showCard(
               similarApartments[target.getAttribute('data-pin')],
               callbackShowDialog(target),
