@@ -24,7 +24,7 @@
   };
 
   var drawSimilarApartments = function (callback) {
-    var MAX_SIMILAR = 5;
+    var MAX_SIMILAR = 3;
 
     if (similarApartments.length > MAX_SIMILAR) {
       similarApartments.splice(MAX_SIMILAR, similarApartments.length - MAX_SIMILAR);
