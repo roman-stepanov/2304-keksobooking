@@ -8,7 +8,77 @@
   var activePin = null;
 
   var APARTMENTS_DATA = 'https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data';
+  var apartments = null;
   var similarApartments = null;
+
+  var formFilters = document.querySelector('.tokyo__filters');
+  var filterType = formFilters.querySelector('#housing_type');
+  var filterPrice = formFilters.querySelector('#housing_price');
+  var filterRooms = formFilters.querySelector('#housing_room-number');
+  var filterGuests = formFilters.querySelector('#housing_guests-number');
+  var filterFeatures = formFilters.querySelector('#housing_features').querySelectorAll('input[type=checkbox]');
+
+  var isInRangeType = function (dataApartment) {
+    return (filterType.value === 'any') || (filterType.value === dataApartment.offer.type);
+  };
+
+  var isInRangePrice = function (dataApartment) {
+    var result = false;
+
+    switch (filterPrice.value) {
+      case 'middle':
+        if (dataApartment.offer.price >= 1000 && dataApartment.offer.price < 1000000) {
+          result = true;
+        }
+        break;
+      case 'low':
+        if (dataApartment.offer.price < 1000) {
+          result = true;
+        }
+        break;
+      case 'hight':
+        if (dataApartment.offer.price >= 1000000) {
+          result = true;
+        }
+    }
+    return result;
+  };
+
+  var isInRangeRooms = function (dataApartment) {
+    return (filterRooms.value === 'any') || (dataApartment.offer.rooms === parseInt(filterRooms.value, 10));
+  };
+
+  var isInRangeGuests = function (dataApartment) {
+    return (filterGuests.value === 'any') || (dataApartment.offer.guests === parseInt(filterGuests.value, 10));
+  };
+
+  var isInRangeFeatures = function (dataApartment) {
+
+    var isFeatureChecked = function (feature) {
+      return feature.checked;
+    };
+
+    var getNameFeature = function (feature) {
+      return feature.value;
+    };
+
+    var checkedFeatures = [].filter.call(filterFeatures, isFeatureChecked).map(getNameFeature);
+    var apartmentFeatures = dataApartment.offer.features;
+
+    var callbackCheckFeatures = function (feature) {
+      return apartmentFeatures.indexOf(feature) !== -1;
+    };
+
+    return (checkedFeatures.length === 0) || (checkedFeatures.every(callbackCheckFeatures));
+  };
+
+  var callbackFilterApartments = function (item) {
+    return isInRangeType(item) &&
+      isInRangePrice(item) &&
+      isInRangeRooms(item) &&
+      isInRangeGuests(item) &&
+      isInRangeFeatures(item);
+  };
 
   var updatePins = function () {
     pins = pinMap.querySelectorAll('.pin');
@@ -24,11 +94,12 @@
   };
 
   var drawSimilarApartments = function (callback) {
-    var MAX_SIMILAR = 3;
+    // var MAX_SIMILAR = 3;
 
-    if (similarApartments.length > MAX_SIMILAR) {
-      similarApartments.splice(MAX_SIMILAR, similarApartments.length - MAX_SIMILAR);
-    }
+    similarApartments = apartments.filter(callbackFilterApartments);
+    // if (similarApartments.length > MAX_SIMILAR) {
+    //   similarApartments.splice(MAX_SIMILAR, similarApartments.length - MAX_SIMILAR);
+    // }
     clearPins();
     similarApartments.forEach(function (item, i) {
       var newPin = window.renderPin(item);
@@ -114,7 +185,14 @@
   };
 
   var callbackLoadData = function (data) {
-    similarApartments = JSON.parse(data);
+    apartments = JSON.parse(data);
+    drawSimilarApartments(remapTabIndex);
+  };
+
+  var changeFilterHandler = function () {
+    if (!document.querySelector('.dialog').classList.contains('invisible')) {
+      dialogClose.click();
+    }
     drawSimilarApartments(remapTabIndex);
   };
 
@@ -122,4 +200,5 @@
   window.load(APARTMENTS_DATA, callbackLoadData);
   pinMap.addEventListener('click', selectPinHandler);
   pinMap.addEventListener('keydown', selectPinHandler);
+  formFilters.addEventListener('change', changeFilterHandler);
 })();

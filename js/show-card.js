@@ -69,8 +69,8 @@ window.showCard = (function () {
   var fillDialog = function (data) {
     var typesApartments = {
       'flat': 'Квартира',
-      'house': 'Дом',
-      'bungalo': 'Сарай'
+      'house': 'Дворец',
+      'bungalo': 'Лачуга'
     };
 
     authorAvatar.setAttribute('src', data.author.avatar);
