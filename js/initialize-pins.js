@@ -4,6 +4,7 @@
 
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = null;
+  var mainPin = pinMap.querySelector('.pin__main');
   var activePin = null;
 
   var APARTMENTS_DATA = 'https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data';
@@ -200,9 +201,28 @@
     drawSimilarApartments(remapTabIndex);
   };
 
+  var getAddressMainPin = function () {
+    document.querySelector('#address').value =
+      'x: ' + parseInt(getComputedStyle(mainPin).left, 10) +
+      ', y: ' + parseInt(getComputedStyle(mainPin).top, 10);
+  };
+
+  var moveMainPinHandler = function (evt) {
+    var imgTokyo = document.querySelector('.tokyo img');
+    var pageHeader = document.querySelector('.header');
+    var minX = 0 - mainPin.clientWidth / 2;
+    var minY = pageHeader.clientHeight;
+    var maxX = imgTokyo.clientWidth - mainPin.clientWidth / 2;
+    var maxY = imgTokyo.clientHeight - mainPin.clientHeight;
+
+    return window.moveElement(evt, mainPin, minX, minY, maxX, maxY, getAddressMainPin);
+  };
+
   updatePins();
   window.load(APARTMENTS_DATA, callbackLoadData);
   pinMap.addEventListener('click', selectPinHandler);
   pinMap.addEventListener('keydown', selectPinHandler);
   formFilters.addEventListener('change', changeFilterHandler);
+  mainPin.addEventListener('mousedown', moveMainPinHandler);
+  getAddressMainPin();
 })();

@@ -24,6 +24,7 @@ window.showCard = (function () {
     dialogWindow.removeEventListener('click', closeDialogHandler);
     dialogWindow.removeEventListener('keydown', closeDialogHandler);
     document.removeEventListener('keydown', pressESCHandler);
+    authorAvatar.removeEventListener('mousedown', moveDialogHandler);
     tokyo.removeChild(dialogWindow);
     if (typeof onCloseDialog === 'function') {
       onCloseDialog();
@@ -34,6 +35,7 @@ window.showCard = (function () {
     dialogWindow.addEventListener('click', closeDialogHandler);
     dialogWindow.addEventListener('keydown', closeDialogHandler);
     document.addEventListener('keydown', pressESCHandler);
+    authorAvatar.addEventListener('mousedown', moveDialogHandler);
     tokyo.appendChild(dialogWindow);
     if (typeof onShowDialog === 'function') {
       onShowDialog();
@@ -106,6 +108,19 @@ window.showCard = (function () {
     if (window.evtPressKey.isPressESC(evt)) {
       closeDialog();
     }
+  };
+
+  var moveDialogHandler = function (evt) {
+    var imgTokyo = document.querySelector('.tokyo img');
+    var pageHeader = document.querySelector('.header');
+    var dialogTitle = dialogWindow.querySelector('.dialog__title');
+    var dialogPanel = dialogWindow.querySelector('.dialog__panel');
+    var minX = 0;
+    var minY = pageHeader.clientHeight;
+    var maxX = imgTokyo.clientWidth - dialogWindow.clientWidth;
+    var maxY = imgTokyo.clientHeight - dialogPanel.clientHeight - dialogTitle.clientHeight;
+
+    return window.moveElement(evt, dialogWindow, minX, minY, maxX, maxY);
   };
 
   return function (dataPin, callbackShow, callbackClose) {
