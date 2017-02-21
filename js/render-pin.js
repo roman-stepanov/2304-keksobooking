@@ -3,14 +3,13 @@
 window.renderPin = (function () {
   var templatePin = document.querySelector('#pin-template');
   var clonePin = templatePin.content.querySelector('.pin');
-  var avatarPin = clonePin.querySelector('img');
-
-  avatarPin.setAttribute('src', 'img/avatars/default.png');
-  avatarPin.setAttribute('alt', 'User Avatar');
 
   return function (dataPin) {
     var newPin = clonePin.cloneNode(true);
+    var avatar = newPin.querySelector('img');
 
+    avatar.setAttribute('src', dataPin.author.avatar);
+    avatar.setAttribute('alt', 'User Avatar');
     newPin.style.left = dataPin.location.x + 'px';
     newPin.style.top = dataPin.location.y + 'px';
 

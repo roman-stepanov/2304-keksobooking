@@ -54,7 +54,7 @@
     window.synchronizeFields(
         noticeType,
         noticePrice,
-        ['apartment', 'shack', 'palace'],
+        ['flat', 'bungalo', 'house'],
         ['1000', '0', '10000'],
         'min',
         callbackSynchronize
@@ -62,7 +62,7 @@
     window.synchronizeFields(
         noticeType,
         noticePrice,
-        ['apartment', 'shack', 'palace'],
+        ['flat', 'bungalo', 'house'],
         ['1000', '0', '10000'],
         'value',
         callbackSynchronize

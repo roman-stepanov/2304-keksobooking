@@ -4,6 +4,7 @@ window.showCard = (function () {
   var tokyo = document.querySelector('.tokyo');
   var dialogWindow = tokyo.querySelector('.dialog');
 
+  var authorAvatar = dialogWindow.querySelector('.dialog__title img');
   var offerTitle = dialogWindow.querySelector('.lodge__title');
   var offerAddress = dialogWindow.querySelector('.lodge__address');
   var offerPrice = dialogWindow.querySelector('.lodge__price');
@@ -12,6 +13,7 @@ window.showCard = (function () {
   var offerCheckinTime = dialogWindow.querySelector('.lodge__checkin-time');
   var offerFeatures = dialogWindow.querySelector('.lodge__features');
   var offerDescription = dialogWindow.querySelector('.lodge__description');
+  var offerPhotos = dialogWindow.querySelector('.lodge__photos');
 
   var onShowDialog = null;
   var onCloseDialog = null;
@@ -49,15 +51,38 @@ window.showCard = (function () {
     });
   };
 
+  var fillPhotos = function (data) {
+    var photos = data.offer.photos;
+
+    offerPhotos.innerHTML = '';
+    photos.forEach(function (item) {
+      var img = document.createElement('img');
+
+      img.setAttribute('src', item);
+      img.setAttribute('width', '52');
+      img.setAttribute('height', '42');
+      img.setAttribute('alt', 'Lodge photo');
+      offerPhotos.appendChild(img);
+    });
+  };
+
   var fillDialog = function (data) {
+    var typesApartments = {
+      'flat': 'Квартира',
+      'house': 'Дворец',
+      'bungalo': 'Лачуга'
+    };
+
+    authorAvatar.setAttribute('src', data.author.avatar);
     offerTitle.innerText = data.offer.title;
     offerAddress.innerText = data.offer.address;
     offerPrice.innerText = data.offer.price + ' ₽/ночь';
-    offerType.innerText = data.offer.type;
+    offerType.innerText = typesApartments[data.offer.type];
     offerRoomsAndGuests.innerText = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
     offerCheckinTime.innerText = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
     fillListFeatures(data);
     offerDescription.innerText = data.offer.description;
+    fillPhotos(data);
   };
 
   var closeDialogHandler = function (evt) {

@@ -19,24 +19,24 @@
         <label><select name="housing_type" id="housing_type" class="tokyo__filter">
           <option value="any" selected>Любой тип жилья</option>
           <option value="flat">Квартира</option>
-          <option value="house">Дом</option>
-          <option value="bungalo">Сарай</option>
+          <option value="house">Дворец</option>
+          <option value="bungalo">Лачуга</option>
         </select></label>
         <label><select name="housing_price" id="housing_price" class="tokyo__filter">
-          <option value="middle" selected>10000 - 50000&#x20bd;</option>
-          <option value="low">до 10000&#x20bd;</option>
-          <option value="hight">от 50000&#x20bd;</option>
+          <option value="middle" selected>1000 - 1000000&#x20bd;</option>
+          <option value="low">до 1000&#x20bd;</option>
+          <option value="hight">от 1000000&#x20bd;</option>
         </select></label>
         <label><select name="housing_room-number" id="housing_room-number" class="tokyo__filter">
           <option value="any" selected>Любое число комнат</option>
-          <option value="1">Одна комната</option>
-          <option value="2">Две комнаты</option>
-          <option value="3">Три комнаты</option>
+          <option value="1">1 комната</option>
+          <option value="2">2 комнаты</option>
+          <option value="100">100 комнат</option>
         </select></label>
         <label><select name="housing_guests-number" id="housing_guests-number" class="tokyo__filter">
           <option value="any" selected>Любое число гостей</option>
-          <option value="1">Один гость</option>
-          <option value="2">Два гостя</option>
+          <option value="0">Не для гостей</option>
+          <option value="3">Для 3 гостей</option>
         </select></label>
         <fieldset id="housing_features" class="tokyo__filter-set">
           <label class="feature">
@@ -68,9 +68,6 @@
     </div>
     <div class="tokyo__pin-map">
       <div class="pin  pin__main" role="button" aria-pressed="false" tabindex="1"><img src="img/main-pin-image.png" alt="Main Pin" class="rounded" width="40" height="44"></div>
-      <div class="pin" style="left: 700px;top: 350px" role="button" aria-pressed="false" tabindex="1"><img src="img/avatars/avatar.png" alt="User Avatar" class="rounded" width="40" height="40"></div>
-      <div class="pin" style="left: 400px;top: 400px" role="button" aria-pressed="false" tabindex="1"><img src="img/avatars/simpson.png" alt="User Avatar" class="rounded" width="40" height="40"></div>
-      <div class="pin" role="button" aria-pressed="false" tabindex="1"><img src="img/avatars/default.png" alt="User Avatar" class="rounded" width="40" height="40"></div>
     </div>
     <div class="dialog  invisible" role="dialog">
       <div class="dialog__title"><img src="img/avatars/avatar.png" alt="Avatar" width="70" height="70">
@@ -127,9 +124,9 @@
             <div class="form__element">
               <label for="type">Тип жилья</label>
               <select id="type">
-                <option value="apartment" selected>Квартира</option>
-                <option value="shack">Лачуга</option>
-                <option value="palace">Дворец</option>
+                <option value="flat" selected>Квартира</option>
+                <option value="bungalo">Лачуга</option>
+                <option value="house">Дворец</option>
               </select>
             </div>
             <div class="form__element">
