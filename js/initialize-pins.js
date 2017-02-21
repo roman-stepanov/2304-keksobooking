@@ -18,26 +18,33 @@
   var filterGuests = formFilters.querySelector('#housing_guests-number');
   var filterFeatures = formFilters.querySelector('#housing_features').querySelectorAll('input[type=checkbox]');
 
+  var ANY_VALUE = 'any';
+  var MIDDLE_PRICE_VALUE = 'middle';
+  var LOW_PRICE_VALUE = 'low';
+  var HIGHT_PRICE_VALUE = 'hight';
+  var MIN_MIDDLE_PRICE_VALUE = 1000;
+  var MAX_MIDDLE_PRICE_VALUE = 1000000;
+
   var isInRangeType = function (dataApartment) {
-    return (filterType.value === 'any') || (filterType.value === dataApartment.offer.type);
+    return (filterType.value === ANY_VALUE) || (filterType.value === dataApartment.offer.type);
   };
 
   var isInRangePrice = function (dataApartment) {
     var result = false;
 
     switch (filterPrice.value) {
-      case 'middle':
-        if (dataApartment.offer.price >= 1000 && dataApartment.offer.price < 1000000) {
+      case MIDDLE_PRICE_VALUE:
+        if (dataApartment.offer.price >= MIN_MIDDLE_PRICE_VALUE && dataApartment.offer.price < MAX_MIDDLE_PRICE_VALUE) {
           result = true;
         }
         break;
-      case 'low':
-        if (dataApartment.offer.price < 1000) {
+      case LOW_PRICE_VALUE:
+        if (dataApartment.offer.price < MIN_MIDDLE_PRICE_VALUE) {
           result = true;
         }
         break;
-      case 'hight':
-        if (dataApartment.offer.price >= 1000000) {
+      case HIGHT_PRICE_VALUE:
+        if (dataApartment.offer.price >= MAX_MIDDLE_PRICE_VALUE) {
           result = true;
         }
     }
@@ -45,11 +52,11 @@
   };
 
   var isInRangeRooms = function (dataApartment) {
-    return (filterRooms.value === 'any') || (dataApartment.offer.rooms === parseInt(filterRooms.value, 10));
+    return (filterRooms.value === ANY_VALUE) || (dataApartment.offer.rooms === parseInt(filterRooms.value, 10));
   };
 
   var isInRangeGuests = function (dataApartment) {
-    return (filterGuests.value === 'any') || (dataApartment.offer.guests === parseInt(filterGuests.value, 10));
+    return (filterGuests.value === ANY_VALUE) || (dataApartment.offer.guests === parseInt(filterGuests.value, 10));
   };
 
   var isInRangeFeatures = function (dataApartment) {
