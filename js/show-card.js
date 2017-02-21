@@ -2,7 +2,9 @@
 
 window.showCard = (function () {
   var tokyo = document.querySelector('.tokyo');
-  var dialogWindow = tokyo.querySelector('.dialog');
+  var templateDialog = document.querySelector('#dialog-template');
+  var cloneDialog = templateDialog.content.querySelector('.dialog');
+  var dialogWindow = cloneDialog.cloneNode(true);
 
   var authorAvatar = dialogWindow.querySelector('.dialog__title img');
   var offerTitle = dialogWindow.querySelector('.lodge__title');
@@ -19,20 +21,20 @@ window.showCard = (function () {
   var onCloseDialog = null;
 
   var closeDialog = function () {
-    dialogWindow.classList.add('invisible');
     dialogWindow.removeEventListener('click', closeDialogHandler);
     dialogWindow.removeEventListener('keydown', closeDialogHandler);
     document.removeEventListener('keydown', pressESCHandler);
+    tokyo.removeChild(dialogWindow);
     if (typeof onCloseDialog === 'function') {
       onCloseDialog();
     }
   };
 
   var showDialog = function () {
-    dialogWindow.classList.remove('invisible');
     dialogWindow.addEventListener('click', closeDialogHandler);
     dialogWindow.addEventListener('keydown', closeDialogHandler);
     document.addEventListener('keydown', pressESCHandler);
+    tokyo.appendChild(dialogWindow);
     if (typeof onShowDialog === 'function') {
       onShowDialog();
     }
@@ -101,7 +103,7 @@ window.showCard = (function () {
   };
 
   var pressESCHandler = function (evt) {
-    if (!dialogWindow.classList.contains('invisible') && window.evtPressKey.isPressESC(evt)) {
+    if (window.evtPressKey.isPressESC(evt)) {
       closeDialog();
     }
   };
