@@ -10,8 +10,8 @@ window.moveElement = (function () {
     moveEvt.preventDefault();
 
     var shift = {
-      x: startPoint.x - moveEvt.clientX,
-      y: startPoint.y - moveEvt.clientY
+      x: startPoint.x - moveEvt.pageX,
+      y: startPoint.y - moveEvt.pageY
     };
 
     var newPosition = {
@@ -27,8 +27,8 @@ window.moveElement = (function () {
     }
 
     startPoint = {
-      x: moveEvt.clientX,
-      y: moveEvt.clientY
+      x: moveEvt.pageX,
+      y: moveEvt.pageY
     };
 
     if (typeof onMoveElement === 'function') {
@@ -63,8 +63,8 @@ window.moveElement = (function () {
     isDragging = true;
 
     startPoint = {
-      x: evt.clientX,
-      y: evt.clientY
+      x: evt.pageX,
+      y: evt.pageY
     };
 
     document.addEventListener('mousemove', onMouseMove);
