@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Keksobooking</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/my.css">
 </head>
 <body>
 <header class="header">
@@ -69,36 +68,6 @@
     <div class="tokyo__pin-map">
       <div class="pin  pin__main" role="button" aria-pressed="false" tabindex="1"><img src="img/main-pin-image.png" alt="Main Pin" class="rounded" width="40" height="44"></div>
     </div>
-    <div class="dialog  invisible" role="dialog">
-      <div class="dialog__title"><img src="img/avatars/avatar.png" alt="Avatar" width="70" height="70">
-        <a href="#" class="dialog__close" role="button" aria-pressed="false" tabindex="1"><img src="img/close.svg" alt="close" width="22" height="22"></a>
-      </div>
-      <div class="dialog__panel">
-        <h3 class="lodge__title">Уютное гнездышко для молодоженов</h3>
-        <p class="lodge__address">102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3</p>
-        <h3 class="lodge__price">5200&#x20bd;/ночь</h3>
-        <h4 class="lodge__type">Квартира</h4>
-        <p class="lodge__rooms-and-guests">2 комнаты для 3 гостей</p>
-        <p class="lodge__checkin-time">Заед после 14:00, выезд до 10:00</p>
-        <div class="lodge__features">
-          <span class="feature__image  feature__image--wifi"></span>
-          <span class="feature__image  feature__image--dishwasher"></span>
-          <span class="feature__image  feature__image--parking"></span>
-          <span class="feature__image  feature__image--washer"></span>
-          <span class="feature__image  feature__image--elevator"></span>
-          <span class="feature__image  feature__image--conditioner"></span>
-        </div>
-        <p class="lodge__description">Великолепная квартира-студия в центре Токио. Подходит как туристам, там и
-          бизнесменам. Квартира полностью укомплектована и имеет свежий ремонт.</p>
-        <div class="lodge__photos">
-          <img src="http://placehold.it/52x42" alt="Lodge photo" width="52" height="42">
-          <img src="http://placehold.it/52x42" alt="Lodge photo" width="52" height="42">
-          <img src="http://placehold.it/52x42" alt="Lodge photo" width="52" height="42">
-          <img src="http://placehold.it/52x42" alt="Lodge photo" width="52" height="42">
-          <img src="http://placehold.it/52x42" alt="Lodge photo" width="52" height="42">
-        </div>
-      </div>
-    </div>
   </section>
   <div class="notice">
     <h2 class="notice__title">Ваше объявление</h2>
@@ -159,7 +128,7 @@
         <div class="form__panel">
           <div class="form__element  form__element--wide">
             <label for="address">Адрес</label>
-            <input id="address" type="text">
+            <input id="address" type="text" readonly>
           </div>
           <div class="form__row">
             <div class="form__element">
@@ -255,14 +224,35 @@
 </footer>
 
 <template id="pin-template">
-  <div class="pin">
+  <div class="pin" aria-pressed="false">
     <img src="" alt="" class="rounded" width="40" height="40">
+  </div>
+</template>
+<template id="dialog-template">
+  <div class="dialog" role="dialog">
+    <div class="dialog__title"><img src="" alt="Avatar" width="70" height="70">
+      <a href="#" class="dialog__close" role="button" aria-pressed="false" tabindex="1"><img src="img/close.svg" alt="close" width="22" height="22"></a>
+    </div>
+    <div class="dialog__panel">
+      <h3 class="lodge__title"></h3>
+      <p class="lodge__address"></p>
+      <h3 class="lodge__price"></h3>
+      <h4 class="lodge__type"></h4>
+      <p class="lodge__rooms-and-guests"></p>
+      <p class="lodge__checkin-time"></p>
+      <div class="lodge__features">
+      </div>
+      <p class="lodge__description"></p>
+      <div class="lodge__photos">
+      </div>
+    </div>
   </div>
 </template>
 
 <script src="js/load.js"></script>
 <script src="js/render-pin.js"></script>
 <script src="js/evt-press-key.js"></script>
+<script src="js/move-element.js"></script>
 <script src="js/show-card.js"></script>
 <script src="js/initialize-pins.js"></script>
 <script src="js/synchronize-fields.js"></script>
