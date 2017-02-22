@@ -200,9 +200,10 @@
   };
 
   var getAddressMainPin = function () {
-    document.querySelector('#address').value =
-      'x: ' + parseInt(getComputedStyle(mainPin).left, 10) +
-      ', y: ' + parseInt(getComputedStyle(mainPin).top, 10);
+    var mainPinX = parseInt(getComputedStyle(mainPin).left, 10) + Math.floor(mainPin.clientWidth / 2);
+    var mainPinY = parseInt(getComputedStyle(mainPin).top, 10) + mainPin.clientHeight;
+
+    document.querySelector('#address').value = 'x: ' + mainPinX + ', y: ' + mainPinY;
   };
 
   var moveMainPinHandler = function (evt) {
