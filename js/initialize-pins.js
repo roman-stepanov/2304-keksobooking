@@ -30,25 +30,16 @@
   };
 
   var isInRangePrice = function (dataApartment) {
-    var result = false;
-
     switch (filterPrice.value) {
       case MIDDLE_PRICE_VALUE:
-        if (dataApartment.offer.price >= MIN_MIDDLE_PRICE_VALUE && dataApartment.offer.price < MAX_MIDDLE_PRICE_VALUE) {
-          result = true;
-        }
-        break;
+        return (dataApartment.offer.price >= MIN_MIDDLE_PRICE_VALUE && dataApartment.offer.price < MAX_MIDDLE_PRICE_VALUE);
       case LOW_PRICE_VALUE:
-        if (dataApartment.offer.price < MIN_MIDDLE_PRICE_VALUE) {
-          result = true;
-        }
-        break;
+        return (dataApartment.offer.price < MIN_MIDDLE_PRICE_VALUE);
       case HIGHT_PRICE_VALUE:
-        if (dataApartment.offer.price >= MAX_MIDDLE_PRICE_VALUE) {
-          result = true;
-        }
+        return (dataApartment.offer.price >= MAX_MIDDLE_PRICE_VALUE);
+      default:
+        return false;
     }
-    return result;
   };
 
   var isInRangeRooms = function (dataApartment) {
@@ -72,14 +63,14 @@
     var checkedFeatures = [].filter.call(filterFeatures, isFeatureChecked).map(getNameFeature);
     var apartmentFeatures = dataApartment.offer.features;
 
-    var callbackCheckFeatures = function (feature) {
+    var checkFeaturesHandler = function (feature) {
       return apartmentFeatures.indexOf(feature) !== -1;
     };
 
-    return (checkedFeatures.length === 0) || (checkedFeatures.every(callbackCheckFeatures));
+    return (checkedFeatures.length === 0) || (checkedFeatures.every(checkFeaturesHandler));
   };
 
-  var callbackFilterApartments = function (item) {
+  var onApartmentsFilter = function (item) {
     return isInRangeType(item) &&
       isInRangePrice(item) &&
       isInRangeRooms(item) &&
@@ -92,17 +83,16 @@
   };
 
   var clearPins = function () {
-    for (var i = 0; i < pins.length; i++) {
-      if (!pins[i].classList.contains('pin__main')) {
-        pinMap.removeChild(pins[i]);
+    [].forEach.call(pins, function (item) {
+      if (!item.classList.contains('pin__main')) {
+        pinMap.removeChild(item);
       }
-    }
+    });
     updatePins();
   };
 
   var drawSimilarApartments = function (similarNumber) {
-
-    similarApartments = apartments.filter(callbackFilterApartments);
+    similarApartments = apartments.filter(onApartmentsFilter);
     if (typeof similarNumber === 'number' && similarApartments.length > similarNumber) {
       similarApartments.splice(similarNumber, similarApartments.length - similarNumber);
     }
@@ -132,17 +122,18 @@
     }
   };
 
-  var callbackShowDialog = function (selectedPin) {
+  var onDialogShow = function (selectedPin) {
     return function () {
       if (activePin) {
         deactivatePin();
       }
       activePin = selectedPin;
       activatePin();
+      document.querySelector('.dialog__close').setAttribute('tabindex', activePin.getAttribute('tabindex'));
     };
   };
 
-  var callbackCloseDialog = function (evt) {
+  var onDialogClose = function (evt) {
     return function () {
       deactivatePin();
       focusPin(evt);
@@ -157,8 +148,8 @@
         if (target.classList.contains('pin') && !target.classList.contains('pin__main')) {
           window.showCard(
               similarApartments[target.getAttribute('data-pin')],
-              callbackShowDialog(target),
-              callbackCloseDialog(evt)
+              onDialogShow(target),
+              onDialogClose(evt)
             );
           break;
         }
@@ -180,12 +171,12 @@
     var sortPins = [].slice.call(pins);
 
     sortPins.sort(comparePinX);
-    for (var i = 0; i < pins.length; i++) {
-      sortPins[i].setAttribute('tabindex', ++tabindex);
-    }
+    [].forEach.call(sortPins, function (item) {
+      item.setAttribute('tabindex', tabindex++);
+    });
   };
 
-  var callbackLoadData = function (data) {
+  var onApartmentsDataLoad = function (data) {
     var DRAW_SIMILAR = 3;
 
     apartments = JSON.parse(data);
@@ -218,7 +209,7 @@
   };
 
   updatePins();
-  window.load(APARTMENTS_DATA, callbackLoadData);
+  window.load(APARTMENTS_DATA, onApartmentsDataLoad);
   pinMap.addEventListener('click', selectPinHandler);
   pinMap.addEventListener('keydown', selectPinHandler);
   formFilters.addEventListener('change', changeFilterHandler);

@@ -2,10 +2,10 @@
 
 window.renderPin = (function () {
   var templatePin = document.querySelector('#pin-template');
-  var clonePin = templatePin.content.querySelector('.pin');
+  var pinToClone = templatePin.content.querySelector('.pin');
 
   return function (dataPin) {
-    var newPin = clonePin.cloneNode(true);
+    var newPin = pinToClone.cloneNode(true);
     var avatar = newPin.querySelector('img');
 
     avatar.setAttribute('src', dataPin.author.avatar);

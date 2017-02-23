@@ -3,7 +3,7 @@
 window.moveElement = (function () {
   var element = null;
   var rangeMove = null;
-  var onMoveElement = null;
+  var onElementMove = null;
   var startPoint = null;
 
   var onMouseMove = function (moveEvt) {
@@ -25,32 +25,28 @@ window.moveElement = (function () {
     if (newPosition.y > rangeMove.minY && newPosition.y < rangeMove.maxY) {
       element.style.top = newPosition.y + 'px';
     }
-
     startPoint = {
       x: moveEvt.pageX,
       y: moveEvt.pageY
     };
-
-    if (typeof onMoveElement === 'function') {
-      onMoveElement();
+    if (typeof onElementMove === 'function') {
+      onElementMove();
     }
   };
 
-  var isDragging = false;
+  var elementMoves = false;
 
   var onMouseUp = function (upEvt) {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-    isDragging = false;
+    elementMoves = false;
   };
 
   return function (evt, movingElement, minX, minY, maxX, maxY, callbackOnMove) {
     evt.preventDefault();
-
-    if (isDragging) {
+    if (elementMoves) {
       onMouseUp();
     }
-
     element = movingElement;
     rangeMove = {
       minX: minX,
@@ -58,10 +54,8 @@ window.moveElement = (function () {
       maxX: maxX,
       maxY: maxY
     };
-    onMoveElement = callbackOnMove;
-
-    isDragging = true;
-
+    onElementMove = callbackOnMove;
+    elementMoves = true;
     startPoint = {
       x: evt.pageX,
       y: evt.pageY
