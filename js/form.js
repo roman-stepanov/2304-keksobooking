@@ -11,7 +11,7 @@
   var noticeRooms = noticeForm.querySelector('#room_number');
   var noticeCapacity = noticeForm.querySelector('#capacity');
 
-  var validationForm = function () {
+  var setLimitsForm = function () {
     noticeTitle.required = true;
     noticeTitle.minLength = 30;
     noticeTitle.maxLength = 100;
@@ -24,40 +24,40 @@
     noticeAddress.required = true;
   };
 
-  var callbackSynchronize = function (sourceInput, targetInput, sourceValues, targetValues, targetProperty) {
+  var onFieldsSynchronize = function (sourceInput, targetInput, sourceValues, targetValues, targetProperty) {
     targetInput[targetProperty] = targetValues[sourceValues.indexOf(sourceInput.value)];
   };
 
-  var changeTime = function () {
+  var changeTimeHandler = function () {
     window.synchronizeFields(
         noticeTime,
         noticeTimeout,
         ['12', '13', '14'],
         ['12', '13', '14'],
         'value',
-        callbackSynchronize
+        onFieldsSynchronize
       );
   };
 
-  var changeTimeout = function () {
+  var changeTimeoutHandler = function () {
     window.synchronizeFields(
         noticeTimeout,
         noticeTime,
         ['12', '13', '14'],
         ['12', '13', '14'],
         'value',
-        callbackSynchronize
+        onFieldsSynchronize
       );
   };
 
-  var changeType = function () {
+  var changeTypeHandler = function () {
     window.synchronizeFields(
         noticeType,
         noticePrice,
         ['flat', 'bungalo', 'house'],
         ['1000', '0', '10000'],
         'min',
-        callbackSynchronize
+        onFieldsSynchronize
       );
     window.synchronizeFields(
         noticeType,
@@ -65,27 +65,27 @@
         ['flat', 'bungalo', 'house'],
         ['1000', '0', '10000'],
         'value',
-        callbackSynchronize
+        onFieldsSynchronize
       );
   };
 
-  var changeRoom = function () {
+  var changeRoomHandler = function () {
     window.synchronizeFields(
         noticeRooms,
         noticeCapacity,
         ['1', '2', '100'],
         ['0', '3', '3'],
         'value',
-        callbackSynchronize
+        onFieldsSynchronize
       );
   };
 
-  validationForm();
-  noticeTime.addEventListener('change', changeTime);
-  noticeTimeout.addEventListener('change', changeTimeout);
-  noticeType.addEventListener('change', changeType);
-  noticeRooms.addEventListener('change', changeRoom);
+  setLimitsForm();
+  noticeTime.addEventListener('change', changeTimeHandler);
+  noticeTimeout.addEventListener('change', changeTimeoutHandler);
+  noticeType.addEventListener('change', changeTypeHandler);
+  noticeRooms.addEventListener('change', changeRoomHandler);
 
-  changeType();
-  changeRoom();
+  changeTypeHandler();
+  changeRoomHandler();
 })();

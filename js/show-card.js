@@ -3,8 +3,8 @@
 window.showCard = (function () {
   var tokyo = document.querySelector('.tokyo');
   var templateDialog = document.querySelector('#dialog-template');
-  var cloneDialog = templateDialog.content.querySelector('.dialog');
-  var dialogWindow = cloneDialog.cloneNode(true);
+  var dialogToClone = templateDialog.content.querySelector('.dialog');
+  var dialogWindow = dialogToClone.cloneNode(true);
 
   var authorAvatar = dialogWindow.querySelector('.dialog__title img');
   var offerTitle = dialogWindow.querySelector('.lodge__title');
@@ -17,8 +17,8 @@ window.showCard = (function () {
   var offerDescription = dialogWindow.querySelector('.lodge__description');
   var offerPhotos = dialogWindow.querySelector('.lodge__photos');
 
-  var onShowDialog = null;
-  var onCloseDialog = null;
+  var onDialogShow = null;
+  var onDialogClose = null;
 
   var closeDialog = function () {
     dialogWindow.removeEventListener('click', closeDialogHandler);
@@ -26,8 +26,8 @@ window.showCard = (function () {
     document.removeEventListener('keydown', pressESCHandler);
     authorAvatar.removeEventListener('mousedown', moveDialogHandler);
     tokyo.removeChild(dialogWindow);
-    if (typeof onCloseDialog === 'function') {
-      onCloseDialog();
+    if (typeof onDialogClose === 'function') {
+      onDialogClose();
     }
   };
 
@@ -37,8 +37,8 @@ window.showCard = (function () {
     document.addEventListener('keydown', pressESCHandler);
     authorAvatar.addEventListener('mousedown', moveDialogHandler);
     tokyo.appendChild(dialogWindow);
-    if (typeof onShowDialog === 'function') {
-      onShowDialog();
+    if (typeof onDialogShow === 'function') {
+      onDialogShow();
     }
   };
 
@@ -46,7 +46,7 @@ window.showCard = (function () {
     var listFeatures = data.offer.features;
 
     offerFeatures.innerHTML = '';
-    listFeatures.forEach(function (item, i) {
+    listFeatures.forEach(function (item) {
       var featureElement = document.createElement('span');
 
       featureElement.classList.add('feature__image');
@@ -124,8 +124,8 @@ window.showCard = (function () {
   };
 
   return function (dataPin, callbackShow, callbackClose) {
-    onShowDialog = callbackShow;
-    onCloseDialog = callbackClose;
+    onDialogShow = callbackShow;
+    onDialogClose = callbackClose;
     fillDialog(dataPin);
     showDialog();
   };
