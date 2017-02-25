@@ -22,13 +22,16 @@ window.moveElement = (function () {
     if (newPosition.x > rangeMove.minX && newPosition.x < rangeMove.maxX) {
       element.style.left = newPosition.x + 'px';
     }
+
     if (newPosition.y > rangeMove.minY && newPosition.y < rangeMove.maxY) {
       element.style.top = newPosition.y + 'px';
     }
+
     startPoint = {
       x: moveEvt.pageX,
       y: moveEvt.pageY
     };
+
     if (typeof onElementMove === 'function') {
       onElementMove();
     }
@@ -42,11 +45,13 @@ window.moveElement = (function () {
     elementMoves = false;
   };
 
-  return function (evt, movingElement, minX, minY, maxX, maxY, callbackOnMove) {
+  return function (evt, movingElement, minX, minY, maxX, maxY, elementMoveHandler) {
     evt.preventDefault();
+
     if (elementMoves) {
       onMouseUp();
     }
+
     element = movingElement;
     rangeMove = {
       minX: minX,
@@ -54,7 +59,7 @@ window.moveElement = (function () {
       maxX: maxX,
       maxY: maxY
     };
-    onElementMove = callbackOnMove;
+    onElementMove = elementMoveHandler;
     elementMoves = true;
     startPoint = {
       x: evt.pageX,

@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = null;
   var mainPin = pinMap.querySelector('.pin__main');
@@ -51,7 +50,6 @@
   };
 
   var isInRangeFeatures = function (dataApartment) {
-
     var isFeatureChecked = function (feature) {
       return feature.checked;
     };
@@ -93,9 +91,11 @@
 
   var drawSimilarApartments = function (similarNumber) {
     similarApartments = apartments.filter(onApartmentsFilter);
+
     if (typeof similarNumber === 'number' && similarApartments.length > similarNumber) {
       similarApartments.splice(similarNumber, similarApartments.length - similarNumber);
     }
+
     clearPins();
     similarApartments.forEach(function (item, i) {
       var newPin = window.renderPin(item);
@@ -127,6 +127,7 @@
       if (activePin) {
         deactivatePin();
       }
+
       activePin = selectedPin;
       activatePin();
       document.querySelector('.dialog__close').setAttribute('tabindex', activePin.getAttribute('tabindex'));
@@ -187,6 +188,7 @@
     if (document.querySelector('.dialog')) {
       document.querySelector('.dialog__close').click();
     }
+
     drawSimilarApartments();
   };
 
