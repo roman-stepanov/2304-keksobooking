@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pins = null;
   var mainPin = pinMap.querySelector('.pin__main');
@@ -51,7 +50,6 @@
   };
 
   var isInRangeFeatures = function (dataApartment) {
-
     var isFeatureChecked = function (feature) {
       return feature.checked;
     };
@@ -190,6 +188,7 @@
     if (document.querySelector('.dialog')) {
       document.querySelector('.dialog__close').click();
     }
+
     drawSimilarApartments();
   };
 
