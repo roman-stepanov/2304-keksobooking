@@ -26,6 +26,7 @@ window.showCard = (function () {
     document.removeEventListener('keydown', pressESCHandler);
     authorAvatar.removeEventListener('mousedown', moveDialogHandler);
     tokyo.removeChild(dialogWindow);
+
     if (typeof onDialogClose === 'function') {
       onDialogClose();
     }
@@ -37,6 +38,7 @@ window.showCard = (function () {
     document.addEventListener('keydown', pressESCHandler);
     authorAvatar.addEventListener('mousedown', moveDialogHandler);
     tokyo.appendChild(dialogWindow);
+
     if (typeof onDialogShow === 'function') {
       onDialogShow();
     }
@@ -123,9 +125,9 @@ window.showCard = (function () {
     return window.moveElement(evt, dialogWindow, minX, minY, maxX, maxY);
   };
 
-  return function (dataPin, callbackShow, callbackClose) {
-    onDialogShow = callbackShow;
-    onDialogClose = callbackClose;
+  return function (dataPin, dialogShowHandler, dialogCloseHandler) {
+    onDialogShow = dialogShowHandler;
+    onDialogClose = dialogCloseHandler;
     fillDialog(dataPin);
     showDialog();
   };

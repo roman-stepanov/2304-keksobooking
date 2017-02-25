@@ -93,9 +93,11 @@
 
   var drawSimilarApartments = function (similarNumber) {
     similarApartments = apartments.filter(onApartmentsFilter);
+
     if (typeof similarNumber === 'number' && similarApartments.length > similarNumber) {
       similarApartments.splice(similarNumber, similarApartments.length - similarNumber);
     }
+
     clearPins();
     similarApartments.forEach(function (item, i) {
       var newPin = window.renderPin(item);
@@ -127,6 +129,7 @@
       if (activePin) {
         deactivatePin();
       }
+
       activePin = selectedPin;
       activatePin();
       document.querySelector('.dialog__close').setAttribute('tabindex', activePin.getAttribute('tabindex'));
